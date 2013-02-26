@@ -22,11 +22,16 @@
 
 require "pathname"
 
+include_recipe "tomcat"
+
 directory node["solr_app"]["path"] do
   mode 00755
+  recursive true
   action :create
 end
 
+
+# Extract war file from solr archive
 ark 'solr_war' do
   url node["solr_app"]["url"]
   action :cherry_pick
@@ -38,6 +43,7 @@ directory node["solr_app"]["solr_home"] do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode 00755
+  recursive true
   action :create
 end
 
@@ -57,11 +63,9 @@ application "solr" do
   path node["solr_app"]["path"]
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-#  repository File.join(Chef::Config[:file_cache_path], "solr_app", File.dirname(node["solr_app"]["archive_war_path"]))
   repository File.join(Chef::Config[:file_cache_path], "solr_app", node["solr_app"]["archive_war_path"] )
   revision File.basename(node["solr_app"]["archive_war_path"], ".war")
   strategy :java_local_file
-#  symlinks({"solr_home" => "solr_home"})
   java_webapp do
     context_template "tomcat.xml.erb"
   end

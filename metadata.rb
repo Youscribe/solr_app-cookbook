@@ -11,4 +11,5 @@ supports         "ubuntu"
 
 depends          "application"
 depends          "application_java"
+depends          "tomcat"
 depends          "ark"
