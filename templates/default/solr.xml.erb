@@ -1,4 +1,5 @@
-<solr persistent="true" sharedLib="lib">
+<?xml version="1.0" encoding="UTF-8" ?>
+<solr persistent="false" coreLoadThreads="1">
  <cores adminPath="/admin/cores">
 <% @collections.sort.each do |collection| -%>
   <core name="<%= collection %>" instanceDir="<%= collection %>" />
