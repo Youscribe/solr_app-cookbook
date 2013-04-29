@@ -8,5 +8,5 @@ action :create do
     action :create
     notifies :create, "template[solr.xml]"
   end
-  @new_resource.updated_by_last_action(true)
+  new_resource.updated_by_last_action(true)
 end
