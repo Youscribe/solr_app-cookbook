@@ -39,6 +39,17 @@ ark 'solr_war' do
   path File.join(Chef::Config[:file_cache_path], "solr_app")
 end
 
+# Since solr 4.3.0 we need slf4j jar http://wiki.apache.org/solr/SolrLogging#Solr_4.3_and_above
+# TODO use an external cookbook
+["slf4j-jdk14-1.7.5.jar", "log4j-over-slf4j-1.7.5.jar"].each do |file|
+  ark file do
+    url "http://www.slf4j.org/dist/slf4j-1.7.5.tar.gz"
+    action :cherry_pick
+    creates ::File.join("slf4j-1.7.5", file)
+    path ::File.join(node["tomcat"]["home"],"lib")
+  end
+end
+
 directory node["solr_app"]["solr_home"] do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
