@@ -65,7 +65,7 @@ template "solr.xml" do
   source "solr.xml.erb"
   cookbook "solr_app"
   variables(
-    :collections => Pathname.new(node["solr_app"]["solr_home"]).children.select { |c| c.directory? }.collect { |p| p.basename }
+    :collections => Array(Pathname.new(node["solr_app"]["solr_home"]).children.select { |c| c.directory? }.collect { |p| p.basename })
   )
 #  notifies :restart, "service[tomcat]"
 end
