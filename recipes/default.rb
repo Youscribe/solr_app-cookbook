@@ -76,8 +76,7 @@ application "solr" do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   repository ::File.join(Chef::Config[:file_cache_path], "solr_app", node["solr_app"]["archive_war_path"] )
-  revision ::File.basename(node["solr_app"]["archive_war_path"], ".war")
-  strategy :java_local_file
+  scm_provider Chef::Provider::File::Deploy
   java_webapp do
     context_template "tomcat.xml.erb"
   end

@@ -10,6 +10,6 @@ supports         "debian"
 supports         "ubuntu"
 
 depends          "application"
-depends          "application_java"
+depends          "application_java", ">= 1.1.0"
 depends          "tomcat"
 depends          "ark"
