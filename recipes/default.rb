@@ -41,11 +41,11 @@ end
 
 # Since solr 4.3.0 we need slf4j jar http://wiki.apache.org/solr/SolrLogging#Solr_4.3_and_above
 # TODO use an external cookbook
-["slf4j-jdk14-1.7.5.jar", "log4j-over-slf4j-1.7.5.jar"].each do |file|
+["slf4j-jdk14-1.6.6.jar", "log4j-over-slf4j-1.6.6.jar", "slf4j-api-1.6.6.jar", "jcl-over-slf4j-1.6.6.jar"].each do |file|
   ark file do
-    url "http://www.slf4j.org/dist/slf4j-1.7.5.tar.gz"
+    url "http://www.slf4j.org/dist/slf4j-1.6.6.tar.gz"
     action :cherry_pick
-    creates ::File.join("slf4j-1.7.5", file)
+    creates ::File.join("slf4j-1.6.6", file)
     path ::File.join(node["tomcat"]["home"],"lib")
     strip_leading_dir true
   end
