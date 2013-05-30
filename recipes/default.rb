@@ -47,6 +47,7 @@ end
     action :cherry_pick
     creates ::File.join("slf4j-1.7.5", file)
     path ::File.join(node["tomcat"]["home"],"lib")
+    strip_leading_dir true
   end
 end
 
