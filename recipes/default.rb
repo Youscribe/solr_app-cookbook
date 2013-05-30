@@ -36,7 +36,7 @@ ark 'solr_war' do
   url node["solr_app"]["url"]
   action :cherry_pick
   creates node["solr_app"]["archive_war_path"]
-  path File.join(Chef::Config[:file_cache_path], "solr_app")
+  path ::File.join(Chef::Config[:file_cache_path], "solr_app")
 end
 
 # Since solr 4.3.0 we need slf4j jar http://wiki.apache.org/solr/SolrLogging#Solr_4.3_and_above
@@ -59,7 +59,7 @@ directory node["solr_app"]["solr_home"] do
 end
 
 template "solr.xml" do
-  path File.join(node["solr_app"]["solr_home"],"solr.xml")
+  path ::File.join(node["solr_app"]["solr_home"],"solr.xml")
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   source "solr.xml.erb"
@@ -74,8 +74,8 @@ application "solr" do
   path node["solr_app"]["path"]
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
-  repository File.join(Chef::Config[:file_cache_path], "solr_app", node["solr_app"]["archive_war_path"] )
-  revision File.basename(node["solr_app"]["archive_war_path"], ".war")
+  repository ::File.join(Chef::Config[:file_cache_path], "solr_app", node["solr_app"]["archive_war_path"] )
+  revision ::File.basename(node["solr_app"]["archive_war_path"], ".war")
   strategy :java_local_file
   java_webapp do
     context_template "tomcat.xml.erb"
