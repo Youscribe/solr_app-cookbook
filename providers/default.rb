@@ -1,4 +1,6 @@
 action :create do
+  run_context.include_recipe "solr_app"
+
   remote_directory "Solr collection" do
     path ::File.join(node["solr_app"]["solr_home"], new_resource.name)
     source new_resource.directory || new_resource.name
