@@ -51,13 +51,14 @@ end
   end
 end
 
-directory node["solr_app"]["solr_home"] do
+d = directory node["solr_app"]["solr_home"] do
   owner node["tomcat"]["user"]
   group node["tomcat"]["group"]
   mode 00755
   recursive true
-  action :create
+  action :nothing
 end
+d.run_action(:create)
 
 template "solr.xml" do
   path ::File.join(node["solr_app"]["solr_home"],"solr.xml")
