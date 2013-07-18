@@ -37,6 +37,7 @@ ark 'solr_war' do
   action :cherry_pick
   creates node["solr_app"]["archive_war_path"]
   path ::File.join(Chef::Config[:file_cache_path], "solr_app")
+  strip_leading_dir false
 end
 
 # Since solr 4.3.0 we need slf4j jar http://wiki.apache.org/solr/SolrLogging#Solr_4.3_and_above
@@ -47,7 +48,6 @@ end
     action :cherry_pick
     creates ::File.join("slf4j-1.6.6", file)
     path ::File.join(node["tomcat"]["home"],"lib")
-    strip_leading_dir true
   end
 end
 
