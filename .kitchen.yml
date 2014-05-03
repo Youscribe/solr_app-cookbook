@@ -16,12 +16,15 @@ platforms:
   driver_config:
     box: opscode-centos-6.4
     box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
-- name: centos-5.9
-  driver_config:
-    box: opscode-centos-5.9
-    box_url: https://opscode-vm.s3.amazonaws.com/vagrant/opscode_centos-5.9_provisionerless.box
 
 suites:
 - name: default
   run_list: ["recipe[solr_app]"]
   attributes: {}
+- name: legacy
+  run_list: ["recipe[test_solr]"]
+  attributes:
+    solr_app:
+      version: '3.6.2'
+      url: 'http://archive.apache.org/dist/lucene/solr/3.6.2/apache-solr-3.6.2.tgz'
+      archive_war_path: 'apache-solr-3.6.2/dist/apache-solr-3.6.2.war'
