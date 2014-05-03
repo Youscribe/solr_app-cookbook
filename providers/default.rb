@@ -1,6 +1,6 @@
-action :create do
-  run_context.include_recipe "solr_app"
+use_inline_resources
 
+action :create do
   remote_directory "Solr collection" do
     path ::File.join(node["solr_app"]["solr_home"], new_resource.name)
     source new_resource.directory || new_resource.name
@@ -8,7 +8,7 @@ action :create do
     owner node["tomcat"]["user"]
     group node["tomcat"]["group"]
     action :create
-    notifies :create, "template[solr.xml]"
   end
+  run_context.include_recipe "solr_app"
   new_resource.updated_by_last_action(true)
 end

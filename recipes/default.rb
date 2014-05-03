@@ -30,14 +30,13 @@ directory node["solr_app"]["path"] do
   action :create
 end
 
-
 # Extract war file from solr archive
 ark 'solr_war' do
   url node["solr_app"]["url"]
   action :cherry_pick
   creates node["solr_app"]["archive_war_path"]
   path ::File.join(Chef::Config[:file_cache_path], "solr_app")
-  strip_leading_dir false
+  strip_components 0
 end
 
 # Since solr 4.3.0 we need slf4j jar http://wiki.apache.org/solr/SolrLogging#Solr_4.3_and_above
@@ -60,18 +59,6 @@ d = directory node["solr_app"]["solr_home"] do
 end
 d.run_action(:create)
 
-template "solr.xml" do
-  path ::File.join(node["solr_app"]["solr_home"],"solr.xml")
-  owner node["tomcat"]["user"]
-  group node["tomcat"]["group"]
-  source "solr.xml.erb"
-  cookbook "solr_app"
-  variables(
-    :collections => Array(Pathname.new(node["solr_app"]["solr_home"]).children.select { |c| c.directory? }.collect { |p| p.basename })
-  )
-#  notifies :restart, "service[tomcat]"
-end
-
 application "solr" do
   path node["solr_app"]["path"]
   owner node["tomcat"]["user"]
@@ -80,6 +67,18 @@ application "solr" do
   scm_provider Chef::Provider::File::Deploy
   java_webapp do
     context_template "tomcat.xml.erb"
+  end
+  before_restart do
+    template "solr.xml" do
+      path ::File.join(node["solr_app"]["solr_home"],"solr.xml")
+      owner node["tomcat"]["user"]
+      group node["tomcat"]["group"]
+      source "solr.xml.erb"
+      cookbook "solr_app"
+      variables(
+        :collections => Array(Pathname.new(node["solr_app"]["solr_home"]).children.select { |c| c.directory? }.collect { |p| p.basename })
+      )
+    end
   end
   tomcat
 end
